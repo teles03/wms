@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Início</title>
+</head>
+<body>
+    <h1>Bem-vindo ao WMS</h1>
+    
+    <p>Usuário logado: <strong th:text="${username}"></strong></p>
+    <p>Seu perfil: <strong th:text="${role}"></strong></p>
+
+    <br>
+        <br>
+    <a href="/tarefa/nova">
+        <button>Iniciar Nova Tarefa</button>
+    </a>
+    <br><br>
+        <div th:if="${role != null and role.contains('ADMIN')}">
+        <br>
+        <a href="/admin/dashboard">
+            <button style="background-color:#333; color:white; padding:10px;">
+                Painel do Administrador
+            </button>
+        </a>
+    </div>
+    <!-- Botão de Sair (Logout) -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair do Sistema</button>
+    </form>
+</body>
+</html>

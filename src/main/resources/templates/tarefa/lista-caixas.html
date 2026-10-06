@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Lista de Caixas</title>
+</head>
+<body>
+    <h1>Lista de Caixas da Tarefa</h1>
+    <p>Tarefa ID: <strong th:text="${tarefa.id}"></strong></p>
+    <p>Usuário: <strong th:text="${tarefa.usuario.nome}"></strong></p>
+    <p>Início: <strong th:text="${tarefa.inicio}"></strong></p>
+
+    <hr>
+    <h2>Selecione uma caixa para trabalhar:</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Ordem</th>
+                <th>Caixa</th>
+                <th>Status</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tc : ${tarefa.caixasDaTarefa}">
+                <td th:text="${tc.ordem}"></td>
+                <td th:text="${tc.caixa.codigoQr}"></td>
+                <td th:text="${tc.status}"></td>
+                <td>
+                    <a th:href="@{/tarefa/caixa/{id}(id=${tc.caixa.id}, tarefaId=${tarefa.id})}">Abrir Caixa</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

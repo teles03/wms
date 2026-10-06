@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Todas as Tarefas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .menu { margin-bottom: 20px; }
+        .menu a { margin-right: 15px; text-decoration: none; color: #0066cc; font-weight: bold; }
+        .menu a.ativo { color: #333; text-decoration: underline; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f0f0f0; }
+        .search-box { margin: 20px 0; }
+        .search-box input { padding: 8px; width: 300px; }
+        .search-box button { padding: 8px 15px; }
+        .btn { padding: 5px 10px; text-decoration: none; color: white; border-radius: 3px; }
+        .btn-view { background-color: #0066cc; }
+        .btn-unlink { background-color: #cc0000; border: none; color: white; cursor: pointer; padding: 5px 10px; border-radius: 3px; }
+        .badge { padding: 3px 8px; border-radius: 10px; font-size: 12px; color: white; }
+        .badge-EM_ANDAMENTO { background-color: #ff9900; }
+        .badge-FINALIZADA { background-color: #00aa00; }
+        .badge-CANCELADA { background-color: #999999; }
+    </style>
+</head>
+<body>
+    <h1>Todas as Tarefas</h1>
+
+    <div class="menu">
+        <a href="/admin/dashboard">Produtividade</a>
+        <a href="/admin/tarefas" class="ativo">Todas as Tarefas</a>
+        <a href="/logout">Sair</a>
+    </div>
+
+    <div th:if="${sucesso}" style="color:green">
+        <p th:text="${sucesso}"></p>
+    </div>
+    <div th:if="${erro}" style="color:red">
+        <p th:text="${erro}"></p>
+    </div>
+
+    <div class="search-box">
+        <form th:action="@{/admin/tarefas}" method="get">
+            <input type="text" name="busca" th:value="${busca}" placeholder="Buscar por usuario, ID ou caixa (ex: CX-001)...">
+            <button type="submit">Buscar</button>
+            <a href="/admin/tarefas"><button type="button">Limpar</button></a>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Inicio</th>
+                <th>Fim</th>
+                <th>Status</th>
+                <th>Ultima Armazenagem</th>
+                <th>Acoes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="t, iter : ${tarefas}">
+                <td th:text="${t.id}"></td>
+                <td th:text="${t.usuario.nome}"></td>
+                <td th:text="${t.inicio}"></td>
+                <td th:text="${t.fim != null ? t.fim : '--'}"></td>
+                <td>
+                    <span th:class="'badge badge-' + ${t.status}" th:text="${t.status}"></span>
+                </td>
+                <td th:text="${locais[iter.index]}"></td>
+                <td>
+                    <a th:href="@{/admin/tarefa/{id}(id=${t.id})}" class="btn btn-view">Visualizar</a>
+                    <form th:if="${t.status.name() == 'EM_ANDAMENTO'}"
+                          th:action="@{/admin/desvincular}" method="post" style="display:inline"
+                          onsubmit="return confirm('Desvincular esta tarefa?')">
+                        <input type="hidden" name="tarefaId" th:value="${t.id}">
+                        <input type="hidden" name="origem" value="tarefas">
+                        <button type="submit" class="btn-unlink">Desvincular</button>
+                    </form>
+                </td>
+            </tr>
+            <tr th:if="${tarefas.isEmpty()}">
+                <td colspan="7" style="text-align:center">Nenhuma tarefa encontrada.</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Bipar Caixas</title>
+</head>
+<body>
+    <h1>Bipar Caixas</h1>
+    <p>Tarefa ID: <strong th:text="${tarefaId}"></strong></p>
+
+    <div th:if="${erro}" style="color:red">
+        <p th:text="${erro}"></p>
+    </div>
+
+    <p>Caixas bipadas: <strong th:text="${codigosBipados != null ? codigosBipados.size() : 0}"></strong> / 20</p>
+
+    <form th:action="@{/tarefa/bipar-caixa}" method="post">
+        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+        
+        <!-- AQUI: envia a lista de códigos já bipados de volta -->
+        <input type="hidden" name="codigosBipados" 
+               th:each="codigo : ${codigosBipados}" 
+               th:value="${codigo}">
+        
+        <label>Bipe o QR Code da caixa:</label>
+        <input type="text" name="codigoQr" autofocus required>
+        <button type="submit">Adicionar Caixa</button>
+    </form>
+
+    <br>
+    <h2>Caixas já bipadas:</h2>
+    <ul>
+        <li th:each="codigo : ${codigosBipados}" th:text="${codigo}"></li>
+    </ul>
+
+    <br>
+    <form th:action="@{/tarefa/concluir-caixas}" method="post">
+        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+        <input type="hidden" name="codigosBipados" 
+               th:each="codigo : ${codigosBipados}" 
+               th:value="${codigo}">
+        <button type="submit">Concluir Lista de Caixas</button>
+    </form>
+</body>
+</html>

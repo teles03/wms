@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Detalhes da Tarefa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Detalhes da Tarefa #<span th:text="${tarefa.id}"></span></h1>
+    <p>Usuario: <strong th:text="${tarefa.usuario.nome}"></strong></p>
+    <p>Inicio: <strong th:text="${tarefa.inicio}"></strong></p>
+    <p>Status: <strong th:text="${tarefa.status}"></strong></p>
+
+    <hr>
+    <h2>Movimentacoes (armazenagens)</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Data/Hora</th>
+                <th>Caixa</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Posicao</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="m : ${movimentacoes}">
+                <td th:text="${m.dataHora}"></td>
+                <td th:text="${m.caixa.codigoQr}"></td>
+                <td th:text="${m.produto.nome}"></td>
+                <td th:text="${m.quantidade}"></td>
+                <td th:text="${m.posicao.codigo}"></td>
+            </tr>
+            <tr th:if="${movimentacoes.isEmpty()}">
+                <td colspan="5" style="text-align:center">Nenhuma movimentacao ainda.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/admin/dashboard">Voltar ao painel</a>
+</body>
+</html>

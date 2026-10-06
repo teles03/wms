@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Produtos da Caixa</title>
+</head>
+<body>
+    <h1>Caixa: <span th:text="${caixa.codigoQr}"></span></h1>
+    <p>Status: <strong th:text="${caixa.status}"></strong></p>
+    <p>Tarefa ID: <strong th:text="${tarefaId}"></strong></p>
+
+    <div th:if="${erro}" style="color:red">
+        <p th:text="${erro}"></p>
+    </div>
+    <div th:if="${sucesso}" style="color:green">
+        <p th:text="${sucesso}"></p>
+    </div>
+
+    <hr>
+    <h2>Produtos na caixa:</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Codigo de Barras</th>
+                <th>Nome</th>
+                <th>Quantidade Restante</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="cp : ${produtos}">
+                <td th:text="${cp.produto.codigoBarras}"></td>
+                <td th:text="${cp.produto.nome}"></td>
+                <td th:text="${cp.quantidade}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <hr>
+    <h2>Bipar Produto</h2>
+    <form th:action="@{/tarefa/bipar-produto}" method="post">
+        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+        <input type="hidden" name="caixaId" th:value="${caixa.id}">
+
+        <label>Bipe o codigo de barras do produto:</label>
+        <input type="text" name="codigoProduto" autofocus required>
+        <button type="submit">Confirmar Produto</button>
+    </form>
+
+    <br>
+
+    <!-- BOTÃO DE FECHAR CAIXA - só aparece se estiver vazia -->
+    <div th:if="${caixaVazia}">
+        <h2 style="color:green">Caixa Vazia!</h2>
+        <p>Voce pode fechar esta caixa para finalizar.</p>
+        <form th:action="@{/tarefa/fechar-caixa}" method="post">
+            <input type="hidden" name="caixaId" th:value="${caixa.id}">
+            <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+            <button type="submit" style="background-color:green; color:white; padding:10px;">
+                Fechar Caixa
+            </button>
+        </form>
+    </div>
+
+    <!-- Se a caixa NÃO estiver vazia, avisa -->
+    <div th:if="${!caixaVazia}" style="color:orange">
+        <p><strong>Atencao:</strong> A caixa ainda tem produtos. Esvazie tudo para poder fechar.</p>
+    </div>
+
+    <br>
+    <a th:href="@{/tarefa/lista(tarefaId=${tarefaId})}">Voltar para a lista de caixas</a>
+</body>
+</html>

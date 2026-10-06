@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>WMS - Posicoes Disponiveis</title>
+</head>
+<body>
+    <h1>Armazenar Produto</h1>
+
+    <p>Produto: <strong th:text="${produto.nome}"></strong></p>
+    <p>Codigo de Barras: <strong th:text="${produto.codigoBarras}"></strong></p>
+
+    <p th:if="${quantidade > 0}">
+        Quantidade disponivel no sistema: <strong th:text="${quantidade}"></strong>
+    </p>
+    <p th:if="${quantidade <= 0}" style="color:orange">
+        <strong>ATENCAO:</strong> O sistema mostra 0, mas a caixa pode ter mais fisicamente.
+        Informe a quantidade real abaixo.
+    </p>
+
+    <p>Caixa: <strong th:text="${caixa.codigoQr}"></strong></p>
+    <p>Tarefa ID: <strong th:text="${tarefaId}"></strong></p>
+
+    <div th:if="${erro}" style="color:red">
+        <p th:text="${erro}"></p>
+    </div>
+
+    <hr>
+    <h2>Posicoes disponiveis:</h2>
+    <ul>
+        <li th:each="pos : ${posicoes}">
+            <strong th:text="${pos.codigo}"></strong>
+        </li>
+    </ul>
+
+    <hr>
+    <h2>Bipar Posicao de Destino</h2>
+    <form th:action="@{/tarefa/armazenar}" method="post">
+        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+        <input type="hidden" name="caixaId" th:value="${caixa.id}">
+        <input type="hidden" name="produtoId" th:value="${produto.id}">
+
+        <label>Quantidade a armazenar:</label>
+        <input type="number" name="quantidade" th:value="${quantidade > 0 ? quantidade : 1}" min="1" required>
+        <br><br>
+
+        <label>Bipe o QR Code da posicao:</label>
+        <input type="text" name="codigoPosicao" autofocus required>
+        <br><br>
+        <button type="submit">Confirmar Armazenagem</button>
+    </form>
+
+    <br>
+    <a th:href="@{/tarefa/caixa/{id}(id=${caixa.id}, tarefaId=${tarefaId})}">Voltar para a caixa</a>
+</body>
+</html>
