@@ -2,44 +2,70 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMS - Bipar Caixas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Bipar Caixas</h1>
-    <p>Tarefa ID: <strong th:text="${tarefaId}"></strong></p>
+    <header class="ml-header">
+        <div class="ml-header-content">
+            <a href="/home" class="ml-logo">WMS<span>.</span></a>
+            <div class="ml-header-user">
+                <span>Tarefa #<strong th:text="${tarefaId}"></strong></span>
+                <a href="/home">Voltar</a>
+            </div>
+        </div>
+    </header>
 
-    <div th:if="${erro}" style="color:red">
-        <p th:text="${erro}"></p>
+    <div class="ml-container">
+        <div class="ml-card">
+            <h1 class="ml-card-title">📦 Bipar Caixas</h1>
+
+            <div th:if="${erro}" class="ml-alert ml-alert-error">
+                <span th:text="${erro}"></span>
+            </div>
+
+            <div class="ml-alert ml-alert-info">
+                Caixas bipadas: <strong th:text="${codigosBipados != null ? codigosBipados.size() : 0}"></strong> / 20
+            </div>
+
+            <form th:action="@{/tarefa/bipar-caixa}" method="post">
+                <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+                <input type="hidden" name="codigosBipados"
+                       th:each="codigo : ${codigosBipados}"
+                       th:value="${codigo}">
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Bipe o QR Code da caixa:</label>
+                    <input type="text" name="codigoQr" class="ml-input" autofocus required
+                           placeholder="Ex: CX-001">
+                </div>
+
+                <button type="submit" class="ml-btn ml-btn-primary">➕ Adicionar Caixa</button>
+            </form>
+        </div>
+
+        <div class="ml-card" th:if="${codigosBipados != null and !codigosBipados.isEmpty()}">
+            <h2 class="ml-card-title">Caixas já bipadas</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li th:each="codigo, iter : ${codigosBipados}"
+                    style="padding: 12px 16px; border-bottom: 1px solid #EEEEEE;">
+                    <span style="color: #3483FA; font-weight: 700; margin-right: 12px;"
+                          th:text="${iter.index + 1} + '.'"></span>
+                    <strong th:text="${codigo}"></strong>
+                </li>
+            </ul>
+
+            <form th:action="@{/tarefa/concluir-caixas}" method="post" class="ml-mt-16">
+                <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+                <input type="hidden" name="codigosBipados"
+                       th:each="codigo : ${codigosBipados}"
+                       th:value="${codigo}">
+                <button type="submit" class="ml-btn ml-btn-success ml-btn-block">
+                    ✅ Concluir Lista de Caixas
+                </button>
+            </form>
+        </div>
     </div>
-
-    <p>Caixas bipadas: <strong th:text="${codigosBipados != null ? codigosBipados.size() : 0}"></strong> / 20</p>
-
-    <form th:action="@{/tarefa/bipar-caixa}" method="post">
-        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
-        
-        <!-- AQUI: envia a lista de códigos já bipados de volta -->
-        <input type="hidden" name="codigosBipados" 
-               th:each="codigo : ${codigosBipados}" 
-               th:value="${codigo}">
-        
-        <label>Bipe o QR Code da caixa:</label>
-        <input type="text" name="codigoQr" autofocus required>
-        <button type="submit">Adicionar Caixa</button>
-    </form>
-
-    <br>
-    <h2>Caixas já bipadas:</h2>
-    <ul>
-        <li th:each="codigo : ${codigosBipados}" th:text="${codigo}"></li>
-    </ul>
-
-    <br>
-    <form th:action="@{/tarefa/concluir-caixas}" method="post">
-        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
-        <input type="hidden" name="codigosBipados" 
-               th:each="codigo : ${codigosBipados}" 
-               th:value="${codigo}">
-        <button type="submit">Concluir Lista de Caixas</button>
-    </form>
 </body>
 </html>

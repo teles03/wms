@@ -2,28 +2,44 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>WMS - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS - Entrar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Login do WMS</h1>
-    
-    <div th:if="${param.error}" style="color:red">
-        Usuário ou senha inválidos.
-    </div>
-    <div th:if="${param.logout}" style="color:green">
-        Você saiu do sistema.
-    </div>
+    <div class="ml-auth-wrapper">
+        <div class="ml-auth-card">
+            <div class="ml-auth-logo">WMS<span>.</span></div>
+            <div class="ml-auth-subtitle">Sistema de Gerenciamento de Armazém</div>
 
-    <form th:action="@{/login}" method="post">
-        <label>Login:</label>
-        <input type="text" name="username" required>
-        <br><br>
-        <label>Senha:</label>
-        <input type="password" name="password" required>
-        <br><br>
-        <button type="submit">Entrar</button>
-    </form>
-        <br><br>
-    <a href="/cadastro">Não tem uma conta? Cadastre-se</a>
+            <div th:if="${param.error}" class="ml-alert ml-alert-error">
+                Usuário ou senha inválidos.
+            </div>
+            <div th:if="${param.logout}" class="ml-alert ml-alert-success">
+                Você saiu do sistema com sucesso.
+            </div>
+            <div th:if="${mensagem}" class="ml-alert ml-alert-success">
+                <span th:text="${mensagem}"></span>
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="ml-form-group">
+                    <label class="ml-label">Usuário</label>
+                    <input type="text" name="username" class="ml-input" required autofocus>
+                </div>
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Senha</label>
+                    <input type="password" name="password" class="ml-input" required>
+                </div>
+
+                <button type="submit" class="ml-btn ml-btn-primary ml-btn-block">Entrar</button>
+            </form>
+
+            <div class="ml-auth-footer">
+                Não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

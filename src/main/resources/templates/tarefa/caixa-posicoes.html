@@ -2,55 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>WMS - Posicoes Disponiveis</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS - Armazenar Produto</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Armazenar Produto</h1>
+    <header class="ml-header">
+        <div class="ml-header-content">
+            <a href="/home" class="ml-logo">WMS<span>.</span></a>
+            <div class="ml-header-user">
+                <span>Armazenagem</span>
+                <a th:href="@{/tarefa/caixa/{id}(id=${caixa.id}, tarefaId=${tarefaId})}">Voltar</a>
+            </div>
+        </div>
+    </header>
 
-    <p>Produto: <strong th:text="${produto.nome}"></strong></p>
-    <p>Codigo de Barras: <strong th:text="${produto.codigoBarras}"></strong></p>
+    <div class="ml-container">
+        <div class="ml-card">
+            <h1 class="ml-card-title">📍 Armazenar Produto</h1>
 
-    <p th:if="${quantidade > 0}">
-        Quantidade disponivel no sistema: <strong th:text="${quantidade}"></strong>
-    </p>
-    <p th:if="${quantidade <= 0}" style="color:orange">
-        <strong>ATENCAO:</strong> O sistema mostra 0, mas a caixa pode ter mais fisicamente.
-        Informe a quantidade real abaixo.
-    </p>
+            <div class="ml-row">
+                <div class="ml-col">
+                    <p style="color: #666;">Produto</p>
+                    <p><strong th:text="${produto.nome}"></strong></p>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Código de Barras</p>
+                    <p><strong th:text="${produto.codigoBarras}"></strong></p>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Caixa</p>
+                    <p><strong th:text="${caixa.codigoQr}"></strong></p>
+                </div>
+            </div>
 
-    <p>Caixa: <strong th:text="${caixa.codigoQr}"></strong></p>
-    <p>Tarefa ID: <strong th:text="${tarefaId}"></strong></p>
+            <div th:if="${quantidade > 0}" class="ml-alert ml-alert-info ml-mt-16">
+                Quantidade disponível no sistema: <strong th:text="${quantidade}"></strong>
+            </div>
+            <div th:if="${quantidade <= 0}" class="ml-alert ml-alert-warning ml-mt-16">
+                <strong>ATENÇÃO:</strong> O sistema mostra 0, mas a caixa pode ter mais fisicamente.
+                Informe a quantidade real abaixo.
+            </div>
+        </div>
 
-    <div th:if="${erro}" style="color:red">
-        <p th:text="${erro}"></p>
+        <div class="ml-card">
+            <h2 class="ml-card-title">Posições disponíveis</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li th:each="pos : ${posicoes}"
+                    style="padding: 12px 16px; border-bottom: 1px solid #EEEEEE;">
+                    <span style="color: #3483FA; font-weight: 600;">📍</span>
+                    <strong th:text="${pos.codigo}" style="margin-left: 8px;"></strong>
+                </li>
+            </ul>
+        </div>
+
+        <div class="ml-card">
+            <h2 class="ml-card-title">🎯 Bipar Posição de Destino</h2>
+
+            <form th:action="@{/tarefa/armazenar}" method="post">
+                <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+                <input type="hidden" name="caixaId" th:value="${caixa.id}">
+                <input type="hidden" name="produtoId" th:value="${produto.id}">
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Quantidade a armazenar:</label>
+                    <input type="number" name="quantidade" class="ml-input"
+                           th:value="${quantidade > 0 ? quantidade : 1}" min="1" required>
+                </div>
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Bipe o QR Code da posição:</label>
+                    <input type="text" name="codigoPosicao" class="ml-input" autofocus required
+                           placeholder="Ex: MZ0-R123-P334-A4">
+                </div>
+
+                <button type="submit" class="ml-btn ml-btn-success ml-btn-block">
+                    ✅ Confirmar Armazenagem
+                </button>
+            </form>
+        </div>
     </div>
-
-    <hr>
-    <h2>Posicoes disponiveis:</h2>
-    <ul>
-        <li th:each="pos : ${posicoes}">
-            <strong th:text="${pos.codigo}"></strong>
-        </li>
-    </ul>
-
-    <hr>
-    <h2>Bipar Posicao de Destino</h2>
-    <form th:action="@{/tarefa/armazenar}" method="post">
-        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
-        <input type="hidden" name="caixaId" th:value="${caixa.id}">
-        <input type="hidden" name="produtoId" th:value="${produto.id}">
-
-        <label>Quantidade a armazenar:</label>
-        <input type="number" name="quantidade" th:value="${quantidade > 0 ? quantidade : 1}" min="1" required>
-        <br><br>
-
-        <label>Bipe o QR Code da posicao:</label>
-        <input type="text" name="codigoPosicao" autofocus required>
-        <br><br>
-        <button type="submit">Confirmar Armazenagem</button>
-    </form>
-
-    <br>
-    <a th:href="@{/tarefa/caixa/{id}(id=${caixa.id}, tarefaId=${tarefaId})}">Voltar para a caixa</a>
 </body>
 </html>

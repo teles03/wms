@@ -1,0 +1,481 @@
+/* ============================================================
+   WMS - Estilo Mercado Livre
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #EBEBEB;
+    color: #333333;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ============================================================
+   HEADER AMARELO (topo do ML)
+   ============================================================ */
+.ml-header {
+    background-color: #FFE600;
+    padding: 12px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.ml-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ml-logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+}
+
+.ml-logo span {
+    color: #3483FA;
+}
+
+.ml-header-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #333;
+    font-size: 14px;
+}
+
+.ml-header-user a {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.ml-header-user a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================
+   CONTAINER PRINCIPAL
+   ============================================================ */
+.ml-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.ml-card {
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin-bottom: 16px;
+}
+
+.ml-card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+.ml-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3483FA;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.1s;
+    text-align: center;
+}
+
+.ml-btn:hover {
+    background-color: #2968C8;
+}
+
+.ml-btn:active {
+    transform: scale(0.98);
+}
+
+.ml-btn-primary {
+    background-color: #3483FA;
+}
+
+.ml-btn-success {
+    background-color: #00A650;
+}
+
+.ml-btn-success:hover {
+    background-color: #008A42;
+}
+
+.ml-btn-danger {
+    background-color: #F23D4F;
+}
+
+.ml-btn-danger:hover {
+    background-color: #D12D3F;
+}
+
+.ml-btn-warning {
+    background-color: #FFE600;
+    color: #333;
+}
+
+.ml-btn-warning:hover {
+    background-color: #E5CE00;
+}
+
+.ml-btn-block {
+    display: block;
+    width: 100%;
+}
+
+.ml-btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+}
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+.ml-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #DDDDDD;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #FFFFFF;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.ml-input:focus {
+    outline: none;
+    border-color: #3483FA;
+    box-shadow: 0 0 0 3px rgba(52, 131, 250, 0.15);
+}
+
+.ml-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.ml-form-group {
+    margin-bottom: 16px;
+}
+
+/* ============================================================
+   TABELAS
+   ============================================================ */
+.ml-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.ml-table thead {
+    background-color: #F5F5F5;
+}
+
+.ml-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.ml-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #EEEEEE;
+    font-size: 14px;
+    color: #333;
+}
+
+.ml-table tbody tr:hover {
+    background-color: #F9F9F9;
+}
+
+.ml-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ============================================================
+   BADGES / ETIQUETAS
+   ============================================================ */
+.ml-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.ml-badge-success {
+    background-color: #E6F7EC;
+    color: #00A650;
+}
+
+.ml-badge-warning {
+    background-color: #FFF8E0;
+    color: #B8860B;
+}
+
+.ml-badge-danger {
+    background-color: #FEE9EC;
+    color: #F23D4F;
+}
+
+.ml-badge-info {
+    background-color: #E6F1FF;
+    color: #3483FA;
+}
+
+/* ============================================================
+   MENSAGENS (alertas)
+   ============================================================ */
+.ml-alert {
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.ml-alert-success {
+    background-color: #E6F7EC;
+    border-color: #00A650;
+    color: #008A42;
+}
+
+.ml-alert-error {
+    background-color: #FEE9EC;
+    border-color: #F23D4F;
+    color: #D12D3F;
+}
+
+.ml-alert-warning {
+    background-color: #FFF8E0;
+    border-color: #FFE600;
+    color: #B8860B;
+}
+
+.ml-alert-info {
+    background-color: #E6F1FF;
+    border-color: #3483FA;
+    color: #2968C8;
+}
+
+/* ============================================================
+   TELA DE LOGIN / CADASTRO
+   ============================================================ */
+.ml-auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+    padding: 20px;
+}
+
+.ml-auth-card {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.ml-auth-logo {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+.ml-auth-logo span {
+    color: #3483FA;
+}
+
+.ml-auth-subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+
+.ml-auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #EEEEEE;
+    font-size: 14px;
+    color: #666;
+}
+
+.ml-auth-footer a {
+    color: #3483FA;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.ml-auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================================
+   MENU DE NAVEGAÇÃO (Admin)
+   ============================================================ */
+.ml-nav {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #EEEEEE;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.ml-nav-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 4px;
+}
+
+.ml-nav a {
+    padding: 16px 20px;
+    text-decoration: none;
+    color: #666;
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.ml-nav a:hover {
+    color: #3483FA;
+    background-color: #F9F9F9;
+}
+
+.ml-nav a.active {
+    color: #3483FA;
+    border-bottom-color: #3483FA;
+}
+
+/* ============================================================
+   BUSCA
+   ============================================================ */
+.ml-search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.ml-search input {
+    flex: 1;
+}
+
+/* ============================================================
+   CARDS DE RESULTADO / PRODUTO
+   ============================================================ */
+.ml-product-card {
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border: 1px solid #EEEEEE;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.ml-product-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   GRID / FLEX UTILITÁRIOS
+   ============================================================ */
+.ml-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.ml-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+.ml-mb-16 {
+    margin-bottom: 16px;
+}
+
+.ml-mt-16 {
+    margin-top: 16px;
+}
+
+.ml-text-center {
+    text-align: center;
+}
+
+.ml-text-right {
+    text-align: right;
+}
+
+/* ============================================================
+   CAIXA VAZIA (destacada)
+   ============================================================ */
+.ml-empty-box {
+    background: linear-gradient(135deg, #E6F7EC 0%, #D4F0DD 100%);
+    border-radius: 8px;
+    padding: 24px;
+    text-align: center;
+    border: 2px dashed #00A650;
+    margin-top: 20px;
+}
+
+.ml-empty-box h3 {
+    color: #00A650;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.ml-empty-box p {
+    color: #333;
+    margin-bottom: 16px;
+}

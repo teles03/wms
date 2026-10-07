@@ -2,33 +2,43 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>WMS - Cadastro de Usuário</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WMS - Criar Conta</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Criar Nova Conta</h1>
+    <div class="ml-auth-wrapper">
+        <div class="ml-auth-card">
+            <div class="ml-auth-logo">WMS<span>.</span></div>
+            <div class="ml-auth-subtitle">Criar nova conta</div>
 
-    <!-- Mensagem de erro -->
-    <div th:if="${erro}" style="color:red">
-        <p th:text="${erro}"></p>
+            <div th:if="${erro}" class="ml-alert ml-alert-error">
+                <span th:text="${erro}"></span>
+            </div>
+
+            <form th:action="@{/cadastro/salvar}" method="post">
+                <div class="ml-form-group">
+                    <label class="ml-label">Nome Completo</label>
+                    <input type="text" name="nome" class="ml-input" required autofocus>
+                </div>
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Login (usuário)</label>
+                    <input type="text" name="login" class="ml-input" required>
+                </div>
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Senha</label>
+                    <input type="password" name="senha" class="ml-input" required>
+                </div>
+
+                <button type="submit" class="ml-btn ml-btn-primary ml-btn-block">Criar Conta</button>
+            </form>
+
+            <div class="ml-auth-footer">
+                Já tem conta? <a href="/login">Faça login</a>
+            </div>
+        </div>
     </div>
-
-    <form th:action="@{/cadastro/salvar}" method="post">
-        <label>Nome Completo:</label>
-        <input type="text" name="nome" required>
-        <br><br>
-
-        <label>Login (usuário):</label>
-        <input type="text" name="login" required>
-        <br><br>
-
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
-        <br><br>
-
-        <button type="submit">Cadastrar</button>
-    </form>
-
-    <br>
-    <a href="/login">Já tem conta? Faça o Login</a>
 </body>
 </html>

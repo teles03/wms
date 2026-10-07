@@ -2,48 +2,90 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMS - Detalhes da Tarefa</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f0f0f0; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Detalhes da Tarefa #<span th:text="${tarefa.id}"></span></h1>
-    <p>Usuario: <strong th:text="${tarefa.usuario.nome}"></strong></p>
-    <p>Inicio: <strong th:text="${tarefa.inicio}"></strong></p>
-    <p>Status: <strong th:text="${tarefa.status}"></strong></p>
+    <header class="ml-header">
+        <div class="ml-header-content">
+            <a href="/home" class="ml-logo">WMS<span>.</span></a>
+            <div class="ml-header-user">
+                <span>Detalhes da Tarefa #<strong th:text="${tarefa.id}"></strong></span>
+                <a href="/admin/dashboard">Voltar</a>
+            </div>
+        </div>
+    </header>
 
-    <hr>
-    <h2>Movimentacoes (armazenagens)</h2>
+    <nav class="ml-nav">
+        <div class="ml-nav-content">
+            <a href="/admin/dashboard">📊 Produtividade</a>
+            <a href="/admin/tarefas">📋 Todas as Tarefas</a>
+        </div>
+    </nav>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Data/Hora</th>
-                <th>Caixa</th>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Posicao</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="m : ${movimentacoes}">
-                <td th:text="${m.dataHora}"></td>
-                <td th:text="${m.caixa.codigoQr}"></td>
-                <td th:text="${m.produto.nome}"></td>
-                <td th:text="${m.quantidade}"></td>
-                <td th:text="${m.posicao.codigo}"></td>
-            </tr>
-            <tr th:if="${movimentacoes.isEmpty()}">
-                <td colspan="5" style="text-align:center">Nenhuma movimentacao ainda.</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="ml-container">
+        <div class="ml-card">
+            <h1 class="ml-card-title">Detalhes da Tarefa #<span th:text="${tarefa.id}"></span></h1>
 
-    <br>
-    <a href="/admin/dashboard">Voltar ao painel</a>
+            <div class="ml-row">
+                <div class="ml-col">
+                    <p style="color: #666;">Usuário</p>
+                    <p><strong th:text="${tarefa.usuario.nome}"></strong></p>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Início</p>
+                    <p><strong th:text="${tarefa.inicio}"></strong></p>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Status</p>
+                    <span th:if="${tarefa.status.name() == 'EM_ANDAMENTO'}"
+                          class="ml-badge ml-badge-warning">EM ANDAMENTO</span>
+                    <span th:if="${tarefa.status.name() == 'FINALIZADA'}"
+                          class="ml-badge ml-badge-success">FINALIZADA</span>
+                    <span th:if="${tarefa.status.name() == 'CANCELADA'}"
+                          class="ml-badge ml-badge-danger">CANCELADA</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ml-card">
+            <h2 class="ml-card-title">📜 Movimentações (armazenagens)</h2>
+
+            <table class="ml-table">
+                <thead>
+                    <tr>
+                        <th>Data/Hora</th>
+                        <th>Caixa</th>
+                        <th>Produto</th>
+                        <th>Qtd</th>
+                        <th>Posição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="m : ${movimentacoes}">
+                        <td th:text="${m.dataHora}"></td>
+                        <td><strong th:text="${m.caixa.codigoQr}"></strong></td>
+                        <td th:text="${m.produto.nome}"></td>
+                        <td>
+                            <span class="ml-badge ml-badge-info" th:text="${m.quantidade}"></span>
+                        </td>
+                        <td>
+                            <span class="ml-badge ml-badge-success" th:text="${m.posicao.codigo}"></span>
+                        </td>
+                    </tr>
+                    <tr th:if="${movimentacoes.isEmpty()}">
+                        <td colspan="5" class="ml-text-center" style="color: #666; padding: 30px;">
+                            Nenhuma movimentação registrada ainda.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ml-mt-16">
+            <a href="/admin/dashboard" class="ml-btn ml-btn-primary">← Voltar ao Painel</a>
+        </div>
+    </div>
 </body>
 </html>

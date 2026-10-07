@@ -2,31 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMS - Início</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Bem-vindo ao WMS</h1>
-    
-    <p>Usuário logado: <strong th:text="${username}"></strong></p>
-    <p>Seu perfil: <strong th:text="${role}"></strong></p>
+    <header class="ml-header">
+        <div class="ml-header-content">
+            <a href="/home" class="ml-logo">WMS<span>.</span></a>
+            <div class="ml-header-user">
+                <span>Olá, <strong th:text="${username}"></strong></span>
+                <form th:action="@{/logout}" method="post" style="display:inline">
+                    <button type="submit" class="ml-btn ml-btn-sm ml-btn-warning">Sair</button>
+                </form>
+            </div>
+        </div>
+    </header>
 
-    <br>
-        <br>
-    <a href="/tarefa/nova">
-        <button>Iniciar Nova Tarefa</button>
-    </a>
-    <br><br>
-        <div th:if="${role != null and role.contains('ADMIN')}">
-        <br>
-        <a href="/admin/dashboard">
-            <button style="background-color:#333; color:white; padding:10px;">
-                Painel do Administrador
-            </button>
-        </a>
+    <div class="ml-container">
+        <div class="ml-card">
+            <h1 class="ml-card-title">Bem-vindo ao WMS</h1>
+            <p style="color: #666; margin-bottom: 8px;">
+                Usuário logado: <strong th:text="${username}"></strong>
+            </p>
+            <p style="color: #666;">
+                Perfil: <strong th:text="${role}"></strong>
+            </p>
+        </div>
+
+        <div class="ml-card">
+            <h2 class="ml-card-title">Ações Rápidas</h2>
+            <div class="ml-row">
+                <div class="ml-col">
+                    <a href="/tarefa/nova" style="text-decoration: none;">
+                        <div class="ml-product-card" style="text-align: center; cursor: pointer;">
+                            <div style="font-size: 40px; margin-bottom: 8px;">📦</div>
+                            <h3 style="color: #3483FA; margin-bottom: 4px;">Iniciar Nova Tarefa</h3>
+                            <p style="color: #666; font-size: 13px;">Bipar caixas e armazenar produtos</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="ml-col" th:if="${role != null and role.contains('ADMIN')}">
+                    <a href="/admin/dashboard" style="text-decoration: none;">
+                        <div class="ml-product-card" style="text-align: center; cursor: pointer;">
+                            <div style="font-size: 40px; margin-bottom: 8px;">📊</div>
+                            <h3 style="color: #3483FA; margin-bottom: 4px;">Painel do Administrador</h3>
+                            <p style="color: #666; font-size: 13px;">Ver produtividade e tarefas</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Botão de Sair (Logout) -->
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Sair do Sistema</button>
-    </form>
 </body>
 </html>

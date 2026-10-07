@@ -5,9 +5,11 @@ import com.wms.wms.service.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("/cadastro")
 public class CadastroController {
 
     private final UsuarioService usuarioService;
@@ -16,14 +18,14 @@ public class CadastroController {
         this.usuarioService = usuarioService;
     }
 
-    // Abre a tela de cadastro
-    @GetMapping("/cadastro")
+    // Abre a tela de cadastro: GET /cadastro
+    @GetMapping("")
     public String abrirTelaCadastro(Usuario usuario) {
-        return "cadastro"; // Procura o arquivo cadastro.html
+        return "cadastro";
     }
 
-    // Recebe os dados do formulário e salva
-    @PostMapping("/cadastro/salvar")
+    // Recebe os dados do formulário: POST /cadastro/salvar
+    @PostMapping("/salvar")
     public String salvarUsuario(Usuario usuario, RedirectAttributes attributes) {
         try {
             usuarioService.cadastrar(usuario);

@@ -2,36 +2,72 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMS - Lista de Caixas</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Lista de Caixas da Tarefa</h1>
-    <p>Tarefa ID: <strong th:text="${tarefa.id}"></strong></p>
-    <p>Usuário: <strong th:text="${tarefa.usuario.nome}"></strong></p>
-    <p>Início: <strong th:text="${tarefa.inicio}"></strong></p>
+    <header class="ml-header">
+        <div class="ml-header-content">
+            <a href="/home" class="ml-logo">WMS<span>.</span></a>
+            <div class="ml-header-user">
+                <span>Tarefa #<strong th:text="${tarefa.id}"></strong></span>
+                <a href="/home">Voltar ao Início</a>
+            </div>
+        </div>
+    </header>
 
-    <hr>
-    <h2>Selecione uma caixa para trabalhar:</h2>
+    <div class="ml-container">
+        <div class="ml-card">
+            <h1 class="ml-card-title">📋 Caixas da Tarefa</h1>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Ordem</th>
-                <th>Caixa</th>
-                <th>Status</th>
-                <th>Ação</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="tc : ${tarefa.caixasDaTarefa}">
-                <td th:text="${tc.ordem}"></td>
-                <td th:text="${tc.caixa.codigoQr}"></td>
-                <td th:text="${tc.status}"></td>
-                <td>
-                    <a th:href="@{/tarefa/caixa/{id}(id=${tc.caixa.id}, tarefaId=${tarefa.id})}">Abrir Caixa</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="ml-row">
+                <div class="ml-col">
+                    <p style="color: #666;">Usuário</p>
+                    <p><strong th:text="${tarefa.usuario.nome}"></strong></p>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Início</p>
+                    <p><strong th:text="${tarefa.inicio}"></strong></p>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Total de caixas</p>
+                    <p><strong th:text="${tarefa.caixasDaTarefa.size()}"></strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ml-card">
+            <h2 class="ml-card-title">Selecione uma caixa para trabalhar:</h2>
+
+            <table class="ml-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Ordem</th>
+                        <th>Caixa</th>
+                        <th>Status</th>
+                        <th style="width: 140px;">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="tc : ${tarefa.caixasDaTarefa}">
+                        <td>
+                            <span class="ml-badge ml-badge-info" th:text="${tc.ordem}"></span>
+                        </td>
+                        <td><strong th:text="${tc.caixa.codigoQr}"></strong></td>
+                        <td>
+                            <span th:if="${tc.status.name() == 'PENDENTE'}" class="ml-badge ml-badge-warning">PENDENTE</span>
+                            <span th:if="${tc.status.name() == 'EM_ANDAMENTO'}" class="ml-badge ml-badge-info">EM ANDAMENTO</span>
+                            <span th:if="${tc.status.name() == 'CONCLUIDA'}" class="ml-badge ml-badge-success">CONCLUÍDA</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/tarefa/caixa/{id}(id=${tc.caixa.id}, tarefaId=${tarefa.id})}"
+                               class="ml-btn ml-btn-sm ml-btn-primary">Abrir Caixa</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
