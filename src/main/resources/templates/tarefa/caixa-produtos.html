@@ -2,72 +2,105 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WMS - Produtos da Caixa</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>Caixa: <span th:text="${caixa.codigoQr}"></span></h1>
-    <p>Status: <strong th:text="${caixa.status}"></strong></p>
-    <p>Tarefa ID: <strong th:text="${tarefaId}"></strong></p>
+    <header class="ml-header">
+        <div class="ml-header-content">
+            <a href="/home" class="ml-logo">WMS<span>.</span></a>
+            <div class="ml-header-user">
+                <span>Caixa <strong th:text="${caixa.codigoQr}"></strong></span>
+                <a th:href="@{/tarefa/lista(tarefaId=${tarefaId})}">Voltar</a>
+            </div>
+        </div>
+    </header>
 
-    <div th:if="${erro}" style="color:red">
-        <p th:text="${erro}"></p>
+    <div class="ml-container">
+        <div class="ml-card">
+            <h1 class="ml-card-title">📦 Caixa <span th:text="${caixa.codigoQr}"></span></h1>
+
+            <div class="ml-row">
+                <div class="ml-col">
+                    <p style="color: #666;">Status</p>
+                    <span th:if="${caixa.status.name() == 'DISPONIVEL'}" class="ml-badge ml-badge-info">DISPONÍVEL</span>
+                    <span th:if="${caixa.status.name() == 'EM_TRABALHO'}" class="ml-badge ml-badge-warning">EM TRABALHO</span>
+                    <span th:if="${caixa.status.name() == 'VAZIA'}" class="ml-badge ml-badge-success">VAZIA</span>
+                </div>
+                <div class="ml-col">
+                    <p style="color: #666;">Tarefa</p>
+                    <p><strong>#<span th:text="${tarefaId}"></span></strong></p>
+                </div>
+            </div>
+
+            <div th:if="${erro}" class="ml-alert ml-alert-error ml-mt-16">
+                <span th:text="${erro}"></span>
+            </div>
+            <div th:if="${sucesso}" class="ml-alert ml-alert-success ml-mt-16">
+                <span th:text="${sucesso}"></span>
+            </div>
+        </div>
+
+        <div class="ml-card">
+            <h2 class="ml-card-title">Produtos na caixa</h2>
+
+            <table class="ml-table">
+                <thead>
+                    <tr>
+                        <th>Código de Barras</th>
+                        <th>Nome</th>
+                        <th style="width: 140px;">Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cp : ${produtos}">
+                        <td th:text="${cp.produto.codigoBarras}"></td>
+                        <td><strong th:text="${cp.produto.nome}"></strong></td>
+                        <td>
+                            <span th:if="${cp.quantidade > 0}" class="ml-badge ml-badge-info" th:text="${cp.quantidade}"></span>
+                            <span th:if="${cp.quantidade <= 0}" class="ml-badge ml-badge-danger" th:text="${cp.quantidade}"></span>
+                        </td>
+                    </tr>
+                    <tr th:if="${produtos.isEmpty()}">
+                        <td colspan="3" class="ml-text-center" style="color: #666;">
+                            Nenhum produto cadastrado nesta caixa.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ml-card">
+            <h2 class="ml-card-title">🎯 Bipar Produto</h2>
+
+            <form th:action="@{/tarefa/bipar-produto}" method="post">
+                <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+                <input type="hidden" name="caixaId" th:value="${caixa.id}">
+
+                <div class="ml-form-group">
+                    <label class="ml-label">Bipe o código de barras do produto:</label>
+                    <input type="text" name="codigoProduto" class="ml-input" autofocus required
+                           placeholder="Ex: 7891000100500">
+                </div>
+
+                <button type="submit" class="ml-btn ml-btn-primary">Confirmar Produto</button>
+            </form>
+        </div>
+
+        <div th:if="${caixaVazia}" class="ml-empty-box">
+            <h3>✅ Caixa Vazia!</h3>
+            <p>Você pode fechar esta caixa para finalizar.</p>
+            <form th:action="@{/tarefa/fechar-caixa}" method="post">
+                <input type="hidden" name="caixaId" th:value="${caixa.id}">
+                <input type="hidden" name="tarefaId" th:value="${tarefaId}">
+                <button type="submit" class="ml-btn ml-btn-success">Fechar Caixa</button>
+            </form>
+        </div>
+
+        <div th:if="${!caixaVazia}" class="ml-alert ml-alert-warning ml-mt-16">
+            ⚠️ A caixa ainda tem produtos. Esvazie tudo para poder fechar.
+        </div>
     </div>
-    <div th:if="${sucesso}" style="color:green">
-        <p th:text="${sucesso}"></p>
-    </div>
-
-    <hr>
-    <h2>Produtos na caixa:</h2>
-
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Codigo de Barras</th>
-                <th>Nome</th>
-                <th>Quantidade Restante</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="cp : ${produtos}">
-                <td th:text="${cp.produto.codigoBarras}"></td>
-                <td th:text="${cp.produto.nome}"></td>
-                <td th:text="${cp.quantidade}"></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <hr>
-    <h2>Bipar Produto</h2>
-    <form th:action="@{/tarefa/bipar-produto}" method="post">
-        <input type="hidden" name="tarefaId" th:value="${tarefaId}">
-        <input type="hidden" name="caixaId" th:value="${caixa.id}">
-
-        <label>Bipe o codigo de barras do produto:</label>
-        <input type="text" name="codigoProduto" autofocus required>
-        <button type="submit">Confirmar Produto</button>
-    </form>
-
-    <br>
-
-    <!-- BOTÃO DE FECHAR CAIXA - só aparece se estiver vazia -->
-    <div th:if="${caixaVazia}">
-        <h2 style="color:green">Caixa Vazia!</h2>
-        <p>Voce pode fechar esta caixa para finalizar.</p>
-        <form th:action="@{/tarefa/fechar-caixa}" method="post">
-            <input type="hidden" name="caixaId" th:value="${caixa.id}">
-            <input type="hidden" name="tarefaId" th:value="${tarefaId}">
-            <button type="submit" style="background-color:green; color:white; padding:10px;">
-                Fechar Caixa
-            </button>
-        </form>
-    </div>
-
-    <!-- Se a caixa NÃO estiver vazia, avisa -->
-    <div th:if="${!caixaVazia}" style="color:orange">
-        <p><strong>Atencao:</strong> A caixa ainda tem produtos. Esvazie tudo para poder fechar.</p>
-    </div>
-
-    <br>
-    <a th:href="@{/tarefa/lista(tarefaId=${tarefaId})}">Voltar para a lista de caixas</a>
 </body>
 </html>
